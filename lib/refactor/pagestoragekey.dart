@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class TabViewDemo extends StatelessWidget {
   const TabViewDemo({super.key});
@@ -17,6 +18,7 @@ class TabViewDemo extends StatelessWidget {
               Tab(icon: Icon(Icons.settings)),
             ]
           ),
+          backgroundColor: Colors.indigo.shade200,
         ),
       body: TabBarView(
         children: [

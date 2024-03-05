@@ -1,0 +1,57 @@
+ ***Insert or save data into database-table
+ ==========================================
+ method_1:
+
+final Database db = await initializeDB();
+  int totalInserted = 0;
+
+for (var i = 0; i < users.length; i++) {
+  int result = await db.insert(
+    'users',
+    users[i].toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+  totalInserted += result;
+}
+return totalInserted;
+-----------------------------------------
+method_2:
+
+final Database db = await initializeDB();
+  int totalInserted = 0;
+  await Future.forEach(users, (User user) async {
+    int result = await db.insert(
+      'users',
+      user.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    totalInserted += result;
+  });
+  return totalInserted;
+------------------------------------------
+
+*** Retrieve data from database-table
+=====================================
+method_1:
+
+Future<List<User>>retrieveUsers() async{
+  final Database db = await initializeDB();
+  final List<Map<String, Object?>>queryResult = await db.query('users');
+  return queryResult.map((e) => User.fromMap(e)).toList();
+}
+-------------------------------------------------------------------------
+method_2:
+
+Future<List<User>?> retrieveUsers() async {
+  try {
+    final Database db = await initializeDB();
+    final List<Map<String, Object?>> queryResult = await db.query('users');
+    return queryResult.map((e) => User.fromMap(e)).toList();
+  } catch (e) {
+    if (kDebugMode) {
+      print("Error retrieving users: $e");
+    }
+    return [];
+  }
+}
+--------------------------------------------------------------------------
